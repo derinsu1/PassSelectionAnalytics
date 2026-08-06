@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Annotated, Literal
 
-from fastapi import Depends, FastAPI, Query, Request, Response
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -363,6 +363,8 @@ def create_app(repository: WorkbenchRepository | None = None) -> FastAPI:
         def frontend(full_path: str) -> FileResponse:
             """Serve built assets directly and fall back to the React entry point for deep links."""
 
+            if full_path == "api" or full_path.startswith("api/"):
+                raise HTTPException(status_code=404, detail="Not Found")
             candidate = (dist_root / full_path).resolve()
             if candidate.is_relative_to(dist_root) and candidate.is_file():
                 return FileResponse(candidate)

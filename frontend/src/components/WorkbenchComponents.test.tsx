@@ -20,7 +20,7 @@ const option: ReceiverOption = {
   tracking_quality: "detected",
   same_frame: { has_valid_location: false, invalid_reason: "missing_receiver_tracking", receiver_x: null, receiver_y: null, open_xt: null, delta_xt: null, rank: null, difference_from_selected: null },
   provider_peak: { available: true, peak_passing_option_frame: 102, peak_frame_offset: -2, peak_frame_offset_seconds: -0.2, xpass: 0.7, xthreat: 0.1, option_score: 0.8, expected_threat: 0.07, rank: 1, choice_objective: 0.056, composite_score: 38.26, choice_rank: 1, passing_option_at_pass_moment: true, metrics_are_same_frame: false },
-  local_xpass: { eligible: false, invalid_reason: "missing_receiver_tracking", confidence: "unavailable", xpass: null, rank: null, availability_score: null, model_version: null },
+  local_xpass: { eligible: false, invalid_reason: "missing_receiver_tracking", confidence: "unavailable", xpass: null, rank: null, availability_score: null },
   pass_viability: { eligible: false, invalid_reason: "same_frame_delta_xt_unavailable", score: null, rank: null, xt_utility: null, normalization_scale: null, version: null },
 };
 
@@ -40,7 +40,7 @@ describe("workbench components", () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(<OptionTable options={[option]} activeOptionId={null} onSelect={onSelect} />);
-    expect(screen.getAllByText("—").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("N/A").length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "Δ xT" })).toBeVisible();
     expect(screen.getByText(metricHelp.sameFrameDeltaXt, { selector: ".metric-tooltip" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "PVI" })).toBeVisible();
@@ -52,8 +52,8 @@ describe("workbench components", () => {
 
   it("sorts receiver options by pass viability", async () => {
     const user = userEvent.setup();
-    const low = { ...option, option_id: "decision:low", receiver_name: "Low viability", pass_viability: { eligible: true, invalid_reason: null, score: 24, rank: 2, xt_utility: 0.4, normalization_scale: 0.006, version: "v0" } };
-    const high = { ...option, option_id: "decision:high", receiver_name: "High viability", pass_viability: { eligible: true, invalid_reason: null, score: 88, rank: 1, xt_utility: 0.9, normalization_scale: 0.006, version: "v0" } };
+    const low = { ...option, option_id: "decision:low", receiver_name: "Low viability", pass_viability: { eligible: true, invalid_reason: null, score: 24, rank: 2, xt_utility: 0.4, normalization_scale: 0.006, version: "v2" } };
+    const high = { ...option, option_id: "decision:high", receiver_name: "High viability", pass_viability: { eligible: true, invalid_reason: null, score: 88, rank: 1, xt_utility: 0.9, normalization_scale: 0.006, version: "v2" } };
     render(<OptionTable options={[low, high]} activeOptionId={null} onSelect={vi.fn()} />);
     await user.click(screen.getByRole("button", { name: "PVI" }));
     expect(Array.from(document.querySelectorAll(".option-table tbody th[scope=\"row\"] .row-link")).map((item) => item.textContent)).toEqual(["High viability", "Low viability"]);
@@ -61,8 +61,8 @@ describe("workbench components", () => {
 
   it("sorts PVI rank from frame-best to lowest rank on first click", async () => {
     const user = userEvent.setup();
-    const rankTen = { ...option, option_id: "decision:rank-ten", receiver_name: "Rank ten", pass_viability: { eligible: true, invalid_reason: null, score: 14, rank: 10, xt_utility: 0.1, normalization_scale: 0.006, version: "v0" } };
-    const rankOne = { ...option, option_id: "decision:rank-one", receiver_name: "Rank one", pass_viability: { eligible: true, invalid_reason: null, score: 88, rank: 1, xt_utility: 0.9, normalization_scale: 0.006, version: "v0" } };
+    const rankTen = { ...option, option_id: "decision:rank-ten", receiver_name: "Rank ten", pass_viability: { eligible: true, invalid_reason: null, score: 14, rank: 10, xt_utility: 0.1, normalization_scale: 0.006, version: "v2" } };
+    const rankOne = { ...option, option_id: "decision:rank-one", receiver_name: "Rank one", pass_viability: { eligible: true, invalid_reason: null, score: 88, rank: 1, xt_utility: 0.9, normalization_scale: 0.006, version: "v2" } };
     render(<OptionTable options={[rankTen, rankOne]} activeOptionId={null} onSelect={vi.fn()} />);
     await user.click(screen.getByRole("button", { name: "PVI rank" }));
     expect(Array.from(document.querySelectorAll(".option-table tbody th[scope=\"row\"] .row-link")).map((item) => item.textContent)).toEqual(["Rank one", "Rank ten"]);

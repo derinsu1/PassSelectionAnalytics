@@ -354,11 +354,11 @@ class ExportService:
     @staticmethod
     def _metric_definitions() -> list[str]:
         return [
-            "Same-frame open xT is a location-only value proxy at the authoritative actual pass frame.",
-            "Local xPass v0 is conditional on deliberately attempting a direct pass to the named teammate.",
-            "Availability v0 is a deterministic lane/interception proxy, not a probability.",
+            "Same-frame Local xT v1 is a location-only value proxy at the authoritative actual pass frame.",
+            "Local xPass v1 is conditional on deliberately attempting a direct pass to the named teammate.",
+            "Availability v1 is a deterministic lane/interception proxy, not a probability.",
             "PVI is a deterministic safety/value composite, not a pass-selection verdict or player rating.",
-            "PVI v1 is 65% Local xPass and 35% bounded actual-frame delta-xT utility; Availability is a visible local diagnostic, not a PVI input or probability.",
+            "PVI v2 is 55% Local xPass and 45% bounded actual-frame delta-xT utility; Availability is a visible local diagnostic, not a PVI input or probability.",
         ]
 
     @staticmethod

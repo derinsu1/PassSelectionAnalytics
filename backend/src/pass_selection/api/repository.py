@@ -59,7 +59,7 @@ from pass_selection.production import (
     PLAYER_STATS_FILENAME,
 )
 
-RENDERED_ARTIFACT_REVISION = "public-production-v1"
+RENDERED_ARTIFACT_REVISION = "public-production-v2"
 DEFAULT_TIMELINE_WINDOW = 30
 MAX_TIMELINE_WINDOW = 180
 REVIEW_SORT_COLUMNS = {
@@ -1491,7 +1491,6 @@ class WorkbenchRepository:
                 xpass=_optional_float(candidate.local_xpass),
                 rank=_optional_int(candidate.local_xpass_rank),
                 availability_score=_optional_float(candidate.availability_score),
-                model_version=_optional_text(candidate.local_xpass_model_version),
             ),
             pass_viability=PassViabilityMetrics(
                 eligible=bool(candidate.get("pass_viability_eligible", False)),
@@ -1549,11 +1548,11 @@ class WorkbenchRepository:
             ),
             options=[self._receiver_option(row, selected_delta) for _, row in candidates.iterrows()],
             metric_definitions=[
-                "Same-frame open xT is the value of the receiver's tracking position at the actual pass frame using the versioned 12×8 open xT grid.",
-                "Same-frame ΔxT is receiver open xT minus the observed pass-start open xT; it is a location-only review proxy, not proof of a correct pass.",
-                "Local xPass v0 is a project-owned, calibrated completion estimate for a deliberately attempted pass to the named teammate at the actual pass frame; it is not a provider metric.",
-                "Availability v0 is a transparent lane/interception proxy using a direct ground-pass convention and must not be interpreted as an observed outcome.",
-                "Pass Viability Index v1 is a project-owned deterministic blend of Local xPass (65%) and bounded same-frame delta xT utility (35%); Availability remains an explanatory diagnostic, not a PVI input. It is neither a probability nor proof that the highest-scoring option was objectively correct.",
+                "Same-frame Local xT v1 is the value of the receiver's tracking position at the actual pass frame using the versioned 12×8 grid.",
+                "Same-frame ΔxT is receiver Local xT v1 minus the observed pass-start Local xT v1; it is a location-only review proxy, not proof of a correct pass.",
+                "Local xPass v1 is a project-owned, calibrated completion estimate for a deliberately attempted pass to the named teammate at the actual pass frame; it is not a provider metric.",
+                "Availability v1 is a transparent lane/interception proxy using a direct ground-pass convention and must not be interpreted as an observed outcome.",
+                "Pass Viability Index v2 is a project-owned deterministic blend of Local xPass (55%) and bounded same-frame delta xT utility (45%); Availability remains an explanatory diagnostic, not a PVI input. It is neither a probability nor proof that the highest-scoring option was objectively correct.",
             ],
         )
 

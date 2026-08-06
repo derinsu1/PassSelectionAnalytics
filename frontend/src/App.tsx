@@ -28,7 +28,10 @@ export function App() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
   const search = useMemo(() => new URLSearchParams(searchText), [searchText]);
-  const view = (search.get("view") as View | null) ?? "explorer";
+  const requestedView = search.get("view");
+  const view: View = requestedView === "inspector" || requestedView === "players" || requestedView === "methodology"
+    ? requestedView
+    : "explorer";
   const updateSearch = useCallback((updates: Record<string, string | null>) => {
     const next = new URLSearchParams(window.location.search);
     Object.entries(updates).forEach(([key, value]) => {

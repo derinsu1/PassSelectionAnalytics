@@ -37,15 +37,15 @@ It deliberately excludes raw Dynamic Events/phases data, correction ledgers, bui
 
 ## Local metrics
 
-### Same-frame open xT and delta xT
+### Same-frame Local xT v1 and delta xT
 
-Open xT is a location-only expected-threat lookup on a versioned 12×8 pitch grid. For every tracked teammate at the actual pass frame, the app reads the receiver location from that grid and compares it with the passer-origin value:
+Local xT v1 is a location-only expected-threat lookup on a versioned 12×8 pitch grid. For every tracked teammate at the actual pass frame, the app reads the receiver location from that grid and compares it with the passer-origin value:
 
-`delta xT = receiver open xT − passer-origin open xT`
+`delta xT = receiver Local xT v1 − passer-origin Local xT v1`
 
-It is useful for a simple location-value comparison, but it does not know pressure, passing lanes, reachability, body shape, kick type, or turnover risk. A higher open-xT alternative is a review prompt, not proof that the observed choice was wrong.
+It is useful for a simple location-value comparison, but it does not know pressure, passing lanes, reachability, body shape, kick type, or turnover risk. A higher Local xT v1 alternative is a review prompt, not proof that the observed choice was wrong.
 
-### Local xPass v0
+### Local xPass v1
 
 Local xPass estimates the probability of completion **conditional on deliberately attempting a direct pass to a named teammate at the actual pass frame**. It is project-owned and separate from Provider xPass.
 
@@ -53,7 +53,7 @@ The published estimator is a calibrated histogram-gradient-boosted tree model. I
 
 Only observed receivers provide training labels: successful passes are 1, unsuccessful passes are 0, and offsides are excluded. Unchosen teammates are scored after fitting, never labelled as failed passes. The current model was evaluated leave-one-match-out over the ten matches, with imputation, fitting, and calibration contained in each training fold. Its reported held-out Brier score is 0.09444, log loss is 0.29654, and ROC-AUC is 0.87636. These results do not establish universal validity beyond this sample, league, or tracking system.
 
-### Availability v0
+### Availability v1
 
 Availability is an explainable lane/interception diagnostic, not a probability. For a direct ground-pass lane, the app compares the ball-arrival time against each defender’s conservative arrival time at sampled lane points. With the smallest defender-minus-ball arrival margin `m`, it stores:
 
@@ -61,13 +61,13 @@ Availability is an explainable lane/interception diagnostic, not a probability. 
 
 Higher values indicate more time before the simplified defender model can reach the lane. The proxy has no information about footedness, body orientation, aerial passes, curve, or actual intended lead target.
 
-### Pass Viability Index (PVI) v1
+### Pass Viability Index (PVI) v2
 
 PVI is a deterministic 0–100 ranking score for eligible teammates at the actual pass frame. It is neither a probability, a player rating, nor an objective best-pass verdict. It combines Local xPass `p` with bounded delta-xT utility:
 
 `U(d) = 0.5 + 0.5 × tanh(d / s)`
 
-`PVI = 100 × (0.65 × p + 0.35 × U(d))`
+`PVI = 100 × (0.55 × p + 0.45 × U(d))`
 
 Here, `d` is same-frame delta xT and `s` is the build-wide 75th percentile of `|d|`. The bounded transform prevents extreme grid differences from dominating. Availability is intentionally not an input because its lane evidence already contributes to Local xPass; adding it again would double-count related safety evidence.
 
@@ -78,7 +78,7 @@ Per-90 values use available regular-time minutes in the ten-match sample. Player
 ## Limits
 
 - Broadcast tracking can omit players or contain extrapolated points.
-- Local xPass, Availability, open xT, and PVI are transparent analytical prompts, not ground truth or counterfactual outcomes.
+- Local xPass v1, Availability v1, Local xT v1, and PVI v2 are transparent analytical prompts, not ground truth or counterfactual outcomes.
 - Provider peak-opportunity fields, Local xPass, and PVI have different timing and comparison universes and must not be interpreted as interchangeable.
 - The ten-match open-data sample is too small for universal player or model claims.
 

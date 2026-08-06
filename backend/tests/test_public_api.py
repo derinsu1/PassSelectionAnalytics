@@ -22,6 +22,9 @@ def test_public_runtime_serves_committed_data_and_excludes_diagnostics() -> None
     detail = client.get(f"/api/decisions/{decision_id}")
     assert detail.status_code == 200
     assert detail.json()["option_count"] == 10
+    assert any("Local xPass v1" in definition for definition in detail.json()["metric_definitions"])
+    assert any("Pass Viability Index v2" in definition for definition in detail.json()["metric_definitions"])
+    assert "model_version" not in detail.json()["selected_receiver"]["local_xpass"]
 
     playback = client.get(f"/api/decisions/{decision_id}/playback", params={"window": 2})
     assert playback.status_code == 200

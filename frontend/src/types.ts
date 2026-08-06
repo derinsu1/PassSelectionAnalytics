@@ -341,7 +341,6 @@ export interface LocalXPassMetrics {
   xpass: number | null;
   rank: number | null;
   availability_score: number | null;
-  model_version: string | null;
 }
 
 export interface PassViabilityMetrics {

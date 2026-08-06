@@ -163,7 +163,7 @@ describe("App URL-backed review filters", () => {
     await screen.findByRole("heading", { name: "Review Explorer" });
     await user.click(screen.getByRole("button", { name: "Team" }));
     await waitFor(() => expect(window.location.search).toContain("sort_by=team"));
-    await user.click(screen.getByRole("button", { name: "Selected open xT rank" }));
+    await user.click(screen.getByRole("button", { name: "Selected Local xT v1 rank" }));
     await waitFor(() => expect(window.location.search).toContain("sort_by=selected_rank"));
     await user.click(screen.getByRole("button", { name: "PVI rank" }));
     await waitFor(() => expect(window.location.search).toContain("sort_by=pass_viability_rank"));
@@ -219,8 +219,8 @@ describe("App URL-backed review filters", () => {
     await screen.findByRole("heading", { name: "Review Explorer" });
     await user.click(screen.getByText("Precision ranges", { exact: true }));
     await user.click(screen.getByText("Review context", { exact: true }));
-    expect(screen.getByLabelText("Selected open xT rank minimum slider")).toHaveAttribute("max", "10");
-    expect(screen.getByLabelText("Selected open xT rank maximum slider")).toHaveAttribute("max", "10");
+    expect(screen.getByLabelText("Selected Local xT v1 rank minimum slider")).toHaveAttribute("max", "10");
+    expect(screen.getByLabelText("Selected Local xT v1 rank maximum slider")).toHaveAttribute("max", "10");
     expect(screen.getByLabelText("Manual annotation")).toBeVisible();
     expect(screen.queryByText("Data quality and annotation")).not.toBeInTheDocument();
     expect(screen.queryByText("Integrity")).not.toBeInTheDocument();
@@ -347,7 +347,7 @@ describe("App URL-backed review filters", () => {
     await screen.findByRole("heading", { name: "Player Analysis" });
     expect(screen.getByRole("link", { name: "Open Home Passer player profile" })).toHaveAttribute("href", expect.stringContaining("player_id=100"));
     await user.click(screen.getByRole("button", { name: "Methodology" }));
-    await screen.findByRole("heading", { name: "What this app can—and cannot—say" });
+    await screen.findByRole("heading", { name: "What this app can and cannot say" });
     expect(screen.queryByRole("region", { name: "Available fixture sample" })).not.toBeInTheDocument();
   });
 });

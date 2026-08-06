@@ -370,7 +370,6 @@ class LocalXPassMetrics(ApiModel):
     xpass: float | None = None
     rank: int | None = None
     availability_score: float | None = None
-    model_version: str | None = None
 
 
 class PassViabilityMetrics(ApiModel):
