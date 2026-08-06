@@ -1,0 +1,37 @@
+html {
+  background: var(--signal-ink);
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-synthesis: none;
+  font-variant-numeric: proportional-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font-variation-settings: "wdth" 100;
+}
+
+input[type="number"],
+input[type="range"],
+.data-table,
+.metric__value,
+.page-intro__counts strong,
+.fixture-strip__score,
+code {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
