@@ -13,6 +13,7 @@ describe("VisualIdentity", () => {
     render(<><PlayerPortrait playerId={99} playerName="Example Player" /><ClubBadge teamId={7} teamName="Example Club" /></>);
     const portrait = screen.getByTitle("Example Player portrait");
     await waitFor(() => expect(portrait).toHaveAttribute("src", "/data/visual-assets/players/99.webp"));
+    expect(fetch).toHaveBeenCalledWith("/data/visual-assets/manifest.json", { cache: "no-store" });
     expect(portrait).toHaveAttribute("alt", "");
     expect(portrait).toHaveAttribute("loading", "lazy");
     expect(portrait).toHaveAttribute("decoding", "async");

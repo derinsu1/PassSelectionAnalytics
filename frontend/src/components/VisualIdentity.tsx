@@ -19,7 +19,7 @@ let manifestRequest: Promise<VisualAssetManifest | null> | null = null;
 
 function loadManifest() {
   if (!manifestRequest) {
-    manifestRequest = (typeof fetch === "undefined" ? Promise.resolve(null) : fetch(manifestPath)
+    manifestRequest = (typeof fetch === "undefined" ? Promise.resolve(null) : fetch(manifestPath, { cache: "no-store" })
       .then((response) => response.ok ? response.json() as Promise<VisualAssetManifest> : null)
       .catch(() => null));
   }
