@@ -1,6 +1,6 @@
 # Pass Selection Analytics
 
-**Live demo (deployment pending):** https://pass-selection-analytics.vercel.app
+**Live demo:** https://passselectionanalytics-production.up.railway.app/
 
 Pass Selection Analytics is a read-only football-analysis demo for exploring observed passes from ten 2024/25 Australian A-League matches. It combines actual-frame tracking playback with transparent local metrics so an analyst can compare the selected receiver with every tracked teammate at the moment of the pass. It is a case study and review tool, not a scouting product or a claim that one metric can determine the objectively correct pass.
 

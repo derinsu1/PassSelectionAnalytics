@@ -367,8 +367,14 @@ def create_app(repository: WorkbenchRepository | None = None) -> FastAPI:
                 raise HTTPException(status_code=404, detail="Not Found")
             candidate = (dist_root / full_path).resolve()
             if candidate.is_relative_to(dist_root) and candidate.is_file():
-                return FileResponse(candidate)
-            return FileResponse(dist_root / "index.html")
+                if full_path.startswith("assets/"):
+                    cache_control = "public, max-age=31536000, immutable"
+                elif full_path.startswith(("data/visual-assets/clubs/", "data/visual-assets/players/")):
+                    cache_control = "public, max-age=604800, stale-while-revalidate=86400"
+                else:
+                    cache_control = "no-cache"
+                return FileResponse(candidate, headers={"Cache-Control": cache_control})
+            return FileResponse(dist_root / "index.html", headers={"Cache-Control": "no-cache"})
     return app
 
 

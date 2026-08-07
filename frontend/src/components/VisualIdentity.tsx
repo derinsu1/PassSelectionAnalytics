@@ -56,6 +56,8 @@ function VisualIdentity({ kind, sourceId, name, className }: { kind: AssetKind; 
     alt=""
     aria-hidden="true"
     title={name}
+    loading="lazy"
+    decoding="async"
     onError={() => { if (src !== fallback) setSrc(fallback); }}
   />;
 }
